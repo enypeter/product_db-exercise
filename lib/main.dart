@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:payble_flutter_test/controllers/product_controller.dart';
-import 'package:payble_flutter_test/theme.dart';
+import 'package:payble_flutter_test/helpers/theme.dart';
 import 'package:payble_flutter_test/views/product_list_screen.dart';
 import 'package:get/get.dart';
 

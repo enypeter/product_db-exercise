@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:path_provider/path_provider.dart';
 import 'package:payble_flutter_test/models/product_model.dart';
 import 'package:sqflite/sqflite.dart';
@@ -9,8 +8,7 @@ class ProductDatabaseHelper {
   static Database? _productDb;
   static ProductDatabaseHelper? _productDatabaseHelper;
 
-  String table = 'productTable';
-  String cartTable = 'cartTable';
+  String table = "products";
   String colId = 'id';
   String colName = 'name';
   String colDescription = "description";
@@ -35,7 +33,7 @@ class ProductDatabaseHelper {
 
   Future<Database> initializeDatabase() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = '${directory.path}products.db';
+    String path = '${directory.path}product_manager.db';
     var myDatabase = await openDatabase(path, version: 1, onCreate: _createDb);
     return myDatabase;
   }
@@ -57,14 +55,14 @@ class ProductDatabaseHelper {
 
   Future<int> insertProduct(Product product, {cart = false}) async {
     Database db = await database;
-    var result = await db.insert(cart ? cartTable : table, product.toJson());
+    var result = await db.insert(table, product.toJson());
     log(result.toString());
     return result;
   }
 
   Future<int> updateProduct(Product product, {cart = false}) async {
     var db = await database;
-    var result = await db.update(cart ? cartTable : table, product.toJson(),
+    var result = await db.update( table, product.toJson(),
         where: '$colId = ?', whereArgs: [product.id]);
     return result;
   }
@@ -72,7 +70,7 @@ class ProductDatabaseHelper {
   Future<int> deleteProduct(int id, {cart = false}) async {
     var db = await database;
     int result = await db
-        .delete(cart ? cartTable : table, where: '$colId = ?', whereArgs: [id]);
+        .delete( table, where: '$colId = ?', whereArgs: [id]);
     return result;
   }
 

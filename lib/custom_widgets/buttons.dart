@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:payble_flutter_test/theme.dart';
+import 'package:payble_flutter_test/helpers/theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DefaultButton extends StatelessWidget {

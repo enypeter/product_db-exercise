@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:payble_flutter_test/custom_widgets/snackbar.dart';
 import 'package:payble_flutter_test/db/product_db.dart';
 import 'package:payble_flutter_test/models/product_model.dart';
-import 'package:payble_flutter_test/views/widget/snackbar.dart';
 
 class ProductController extends GetxController {
   var picker = ImagePicker().obs;
@@ -44,9 +44,15 @@ class ProductController extends GetxController {
 
   void addProduct(Product product) {
     ProductDatabaseHelper.db.insertProduct(product).then((value) {
-      print('======> $value');
       products.add(product);
     });
+
+    nameController.value.clear();
+    descriptionController.value.clear();
+    costPriceController.value.clear();
+    sellingPriceController.value.clear();
+    quantityController.value.clear();
+    imagePath.value = '';
   }
 
   void deleteProduct(Product product) {
@@ -59,7 +65,6 @@ class ProductController extends GetxController {
     var result = await fetchProducts();
     if (result != null) {
       final index = products.indexOf(product);
-      print(index);
       products[index] = product;
     }
   }
@@ -70,30 +75,28 @@ class ProductController extends GetxController {
         .then((value) => updateList(product));
   }
 
-  void handleAddButton(id) {
-    if (id != null) {
-      var product = Product(
-        id: id,
-        name: nameController.value.text,
-        description: descriptionController.value.text,
-        costPrice:
-            double.parse(costPriceController.value.text.replaceAll(',', '')),
-        sellingPrice:
-            double.parse(sellingPriceController.value.text.replaceAll(',', '')),
-        image: imagePath.value,
-        quantity: quantityController.value.text,
-      );
-      addProduct(product);
-      Get.back();
-      CustomSnack().showSnackBar("Successful!",
-          "${product.name} added successfully", SnackType.success);
-      nameController.value.clear();
-      descriptionController.value.clear();
-      costPriceController.value.clear();
-      sellingPriceController.value.clear();
-      quantityController.value.clear();
-      imagePath.value = '';
-    }
+  int generateId() {
+    var date = DateTime.now().toString().replaceAll(RegExp('[^A-Za-z0-9]'), '').substring(5);
+    return int.parse(date);
+  }
+
+  void handleAddButton() {
+    var product = Product(
+      id: generateId(),
+      name: nameController.value.text,
+      description: descriptionController.value.text,
+      costPrice:
+          double.parse(costPriceController.value.text.replaceAll(',', '')),
+      sellingPrice:
+          double.parse(sellingPriceController.value.text.replaceAll(',', '')),
+      image: imagePath.value,
+      quantity: quantityController.value.text,
+    );
+    addProduct(product);
+    Get.back();
+    CustomSnack().showSnackBar(
+        "Successful!", "${product.name} added successfully", SnackType.success);
+
   }
 
   void toggleShowSearch() {

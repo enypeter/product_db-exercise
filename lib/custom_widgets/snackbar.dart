@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:payble_flutter_test/theme.dart';
+import 'package:payble_flutter_test/helpers/theme.dart';
 
 enum SnackType { success, notice, error }
 
